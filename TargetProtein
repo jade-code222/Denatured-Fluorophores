@@ -1,0 +1,11 @@
+from transformers import T5Tokenizer, T5EncoderModel
+import torch
+import re
+
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+# Load the tokenizer
+tokenizer = T5Tokenizer.from_pretrained('Rostlab/prot_t5_xl_half_uniref50-enc', do_lower_case=False)
+# Load the model
+model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc").to(device)
+
+
