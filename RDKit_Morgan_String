@@ -1,0 +1,19 @@
+from rdkit import Chem
+from rdkit.Chem import AllChem
+
+def Morgan_Bitstring (SMILE_STRING: str):
+# Create a molecule from a SMILES string
+
+    mol = Chem.MolFromSmiles(SMILE_STRING)
+
+    #Generate Morgan fingerprint (ECFP-like)
+    fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=2048)
+
+    print(fp)
+
+    fp_bitstring = fp.ToBitString()                 # converts the fingerprint to a bit string representation
+
+    return fp_bitstring
+
+
+
