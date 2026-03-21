@@ -1,7 +1,13 @@
+import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-def Morgan_Bitstring (SMILE_STRING: str):
+# Read a CSV file
+df = pd.read_csv("train.csv")
+
+def bitstrig_to_array(bitstring: str):          # function to convert the bitstring to an array of integers
+
+def Morgan_Bitstring (SMILE_STRING: str):       # temps function to get the bitstrings from the SMILE code
 # Create a molecule from a SMILES string
 
     mol = Chem.MolFromSmiles(SMILE_STRING)
