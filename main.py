@@ -19,10 +19,10 @@ encoded_drug=Morgan_array(drug_structs)
 encoded_protein = np.array([get_protein_embedding(seq) for seq in protein_structs]) 
 
 #dimentionality reduction by PCA
-drug_PCA=PCA(0.95)#this can be tuned
+drug_PCA=PCA(n_components=200)#this can be tuned
 drug_reduced = drug_PCA.fit_transform(encoded_drug)
 
-pca_protein = PCA(0.95)#this can be tuned
+pca_protein = PCA(n_components=200)#this can be tuned
 protein_reduced = pca_protein.fit_transform(encoded_protein)
 
 
