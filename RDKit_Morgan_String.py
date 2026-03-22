@@ -1,6 +1,7 @@
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import AllChem
+#add numpy
 
 
 # Read a CSV file
@@ -49,5 +50,5 @@ def Morgan_Bitstring (SMILE_STRING: str):       # temps function to get the bits
 
 
 Morgan_array()
-
+#must be an array of numbers [1,0,1,1,0,...,1]
 

@@ -9,10 +9,10 @@ from xgboost import XGBRegressor
 def xgboost_model(X,y,depth=6)->tuple:
 
     #Split test 80% and train 20%
-    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.8, train_size=0.2, random_state=1, shuffle=False)
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2, train_size=0.8, random_state=1, shuffle=True)
 
     #xg boost tree generation, 
-    tree_model = XGBRegressor(n_estimators=200,max_depth=depth,learning_rate=0.1,random_state=1)
+    tree_model = XGBRegressor(n_estimators=300,max_depth=depth,learning_rate=0.1,random_state=1)
     #training on the train data
     tree_model.fit(X_train, y_train)
 
@@ -48,8 +48,11 @@ def best_model(X, y) -> tuple:
             min_MAE = MAE
             best_MAE_depth = new_depth
 
-    print(f"Best R2 depth: {best_R2_depth}, Best MSE depth: {best_MSE_depth}, Best MAE depth: {best_MAE_depth}")
+    
     return best_R2_depth, best_MSE_depth, best_MAE_depth
+#what is cross validation
+#what is hyperparameter tuning
+#what is the demention reduction
 
 
 
