@@ -8,22 +8,28 @@ from TargetProtein import get_protein_embedding
 model = joblib.load('xgboost_pIC50.pkl')
 drug_pca = joblib.load('drug_pca.pkl')
 prot_pca = joblib.load('protein_pca.pkl')
+drug_scaler = joblib.load('drug_scaler.pkl')  
+prot_scaler = joblib.load('protein_scaler.pkl')
 
 #
-test_data = pd.read_csv("test.csv")
+test_data = pd.read_csv("test.csv")#temp idk what this is
 drug_structs = test_data["SMILES"].tolist()
-prot_seqs = test_data["amino acid sequence"].tolist()
+prot_seqs = test_data["amino_acid_sequence"].tolist()
 
 #Encode & Transform (Must match training steps exactly)
 encoded_drug = Morgan_array(drug_structs)
 encoded_prot = np.array([get_protein_embedding(s) for s in prot_seqs])
 
-# USE TRANSFORM ONLY (Don't re-fit the PCA)
-drug_red = drug_pca.transform(encoded_drug)
-prot_red = prot_pca.transform(encoded_prot)
+#Transform
+scaled_d = drug_pca.transform(encoded_drug)
+scaled_p = prot_pca.transform(encoded_prot)
+final_d = drug_pca.transform(scaled_d)
+final_p = prot_pca.transform(scaled_p)
+
+
 
 # Recreate the interaction term (X)
-X_test = np.concatenate([drug_red, prot_red, drug_red * prot_red], axis=1)
+X_test = np.concatenate([final_d, final_p, final_d * final_p], axis=1)
 
 # Predict
 predictions = model.predict(X_test)

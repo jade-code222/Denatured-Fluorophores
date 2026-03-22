@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from xgboost import XGBRegressor
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 from RDKit_Morgan_String import Morgan_array
 from TargetProtein import get_protein_embedding
@@ -10,7 +11,7 @@ from model import xgboost_model, best_model
 import joblib
 
 #Initialize dataset
-datafile = pd.read_csv("train.csv",nrows=20)
+datafile = pd.read_csv("train.csv",nrows=100)
 drug_structs=datafile["SMILES"].tolist()
 protein_structs=datafile["amino_acid_sequence"].tolist()
 y=datafile["Affinity"].values
@@ -24,12 +25,13 @@ print("Starting protein encoding...")
 
 #dimentionality reduction by PCA
 print("Starting PCA dimensionality reduction...")
+scaled_drug = StandardScaler().fit_transform(encoded_drug)
 drug_PCA=PCA(n_components=10)#this can be tuned
-drug_reduced = drug_PCA.fit_transform(encoded_drug)
+drug_reduced = drug_PCA.fit_transform(scaled_drug)
 print("Drug PCA completed.")
-
-pca_protein = PCA(n_components=10)#this can be tuned
-protein_reduced = pca_protein.fit_transform(encoded_protein)
+scaled_protein = StandardScaler().fit_transform(encoded_protein)
+protein_PCA = PCA(n_components=10)#this can be tuned
+protein_reduced = protein_PCA.fit_transform(scaled_protein)
 
 
 #concatenate and add the element cross product to provide prossiblity of interation
@@ -51,4 +53,4 @@ final_model.fit(X, y)
 # Save everything
 joblib.dump(final_model, 'xgboost_pIC50.pkl')
 joblib.dump(drug_PCA, 'drug_pca.pkl')
-joblib.dump(pca_protein, 'protein_pca.pkl')
+joblib.dump(protein_PCA, 'protein_pca.pkl')
