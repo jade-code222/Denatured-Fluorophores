@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from xgboost import XGBRegressor
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 from RDKit_Morgan_String import Morgan_array
 from TargetProtein import get_protein_embedding
@@ -24,12 +25,13 @@ print("Starting protein encoding...")
 
 #dimentionality reduction by PCA
 print("Starting PCA dimensionality reduction...")
+scaled_drug = StandardScaler().fit_transform(encoded_drug)
 drug_PCA=PCA(n_components=10)#this can be tuned
-drug_reduced = drug_PCA.fit_transform(encoded_drug)
+drug_reduced = drug_PCA.fit_transform(scaled_drug)
 print("Drug PCA completed.")
-
+scaled_protein = StandardScaler().fit_transform(encoded_protein)
 protein_PCA = PCA(n_components=10)#this can be tuned
-protein_reduced = protein_PCA.fit_transform(encoded_protein)
+protein_reduced = protein_PCA.fit_transform(scaled_protein)
 
 
 #concatenate and add the element cross product to provide prossiblity of interation
