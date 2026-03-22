@@ -12,15 +12,15 @@ model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc").t
 model.eval()
 print('allo ')
 def get_protein_embedding(sequence):
-    # ProtTrans requires spaces between amino acids
+    # ProtTrans formatting 
     sequence_spaced = " ".join(list(sequence))
     
-    # Tokenize and move to GPU/CPU
+    # Tokenize
     ids = tokenizer.batch_encode_plus([sequence_spaced], add_special_tokens=True, padding=True)
     input_ids = torch.tensor(ids['input_ids']).to(device)
     attention_mask = torch.tensor(ids['attention_mask']).to(device)
 
-    # Generate hidden states without calculating gradients (faster)
+    # Generate hidden states without calculating gradients 
     with torch.no_grad():
         embedding = model(input_ids=input_ids, attention_mask=attention_mask)
     
@@ -34,4 +34,4 @@ def get_protein_embedding(sequence):
 # Example: Sequence for a small peptide
 test_seq = "MSLGVASVSIR"
 embedding = get_protein_embedding(test_seq)
-print(f"Embedding shape: {embedding.shape}") # Typically 1024-dimensional
+print(f"Embedding shape: {embedding.shape}") # expect-> 1024-dimensional

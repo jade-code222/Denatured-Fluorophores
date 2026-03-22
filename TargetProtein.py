@@ -4,7 +4,7 @@ from transformers import T5Tokenizer, T5EncoderModel
 import numpy as np
 import pickle
 
-# 1. Setup (The part you already have)
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 tokenizer = T5Tokenizer.from_pretrained('Rostlab/prot_t5_xl_half_uniref50-enc', do_lower_case=False)
 model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc").to(device)
@@ -25,28 +25,22 @@ def get_protein_embedding(sequence):
 #read 10 lines
 print("Reading the first 10 rows of train.csv...")
 df = pd.read_csv('train.csv', nrows=10)
-
-# This will store our final embeddings
 protein_embeddings_list = []
 
 print("Starting target protein embedding generation...")
 for i, row in df.iterrows():
-    # Extract the amino acid sequence [cite: 49, 51]
     sequence = row['amino_acid_sequence']
-    
-    # Generate the embedding
+    #generate embedding
     embedding = get_protein_embedding(sequence)
-    
     protein_embeddings_list.append(embedding)
     print(f"Processed protein {i+1}/10 | Vector Shape: {embedding.shape}")
 
-# Convert list to a final numpy matrix
-# This matrix can be used as the 'Target' input for your ML model
+#convert list to numpy matrix
 protein_matrix = np.array(protein_embeddings_list)
 
 print("\n--- Summary ---")
 print(f"Final Protein Matrix Shape: {protein_matrix.shape}") 
-# Expected shape: (10, 1024)
+#expected -> (10, 1024)
 
 
 
@@ -57,23 +51,22 @@ print(f"Final Protein Matrix Shape: {protein_matrix.shape}")
 print("Reading train.csv...")
 df = pd.read_csv('train.csv')
 
-# Optimization: Only embed each unique sequence ONCE [cite: 63]
+
 unique_seqs = df['amino_acid_sequence'].unique() 
 print(f"Found {len(unique_seqs)} unique protein sequences.")
 
 protein_lookup = {}
 
 for i, seq in enumerate(unique_seqs):
-    # This is where the actual 'reading' and 'calculating' happens
     protein_lookup[seq] = get_protein_embedding(seq)
     
     if i % 10 == 0:
         print(f"Processed {i}/{len(unique_seqs)} proteins...")
 
-# 3. Save it so you never have to do this again
+#write in a file
 with open('protein_embeddings.pkl', 'wb') as f:
     pickle.dump(protein_lookup, f)
 
-print("Finished! Your protein data is now saved in protein_embeddings.pkl")
+print("Finished! Protein data is now saved in protein_embeddings.pkl")
 
 """

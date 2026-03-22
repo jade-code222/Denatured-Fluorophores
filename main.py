@@ -16,7 +16,7 @@ protein_structs=datafile['amino_acid_sequence'].tolist()
 y=datafile["pIC50"].values
 
 #call the encoders (morgan fp, protein)
-encoded_drug=Morgan_array(drug_structs)
+encoded_drug=Morgan_array(drug_structs.head(10)) #this can be tuned according to the size of the dataset, for testing purposes we will use 100
 encoded_protein = np.array([get_protein_embedding(seq) for seq in protein_structs]) 
 
 #dimentionality reduction by PCA
