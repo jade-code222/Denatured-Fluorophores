@@ -28,12 +28,8 @@ drug_PCA=PCA(n_components=10)#this can be tuned
 drug_reduced = drug_PCA.fit_transform(encoded_drug)
 print("Drug PCA completed.")
 
-<<<<<<< Updated upstream
-pca_protein = PCA(n_components=10)#this can be tuned
-=======
-protein_PCA = PCA(n_components=200)#this can be tuned
->>>>>>> Stashed changes
-protein_reduced = pca_protein.fit_transform(encoded_protein)
+protein_PCA = PCA(n_components=10)#this can be tuned
+protein_reduced = protein_PCA.fit_transform(encoded_protein)
 
 
 #concatenate and add the element cross product to provide prossiblity of interation
