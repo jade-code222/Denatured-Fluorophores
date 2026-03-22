@@ -9,8 +9,8 @@ def Morgan_array(smiles_list: list):
     fingerprints = []
 
     for smile in smiles_list:
+        
         fp = Morgan_Bitstring(smile)        # Generate the Morgan fingerprint for the current SMILES string using RDKit
-        print (smile)
         fingerprints.append(fp)             # Append the generated fingerprint to the list of fingerprints
 
     return np.array(fingerprints)           # Return the numerical list of fingerprints as a NumPy array

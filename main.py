@@ -6,12 +6,13 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 from RDKit_Morgan_String import Morgan_array
-from TargetProtein import get_protein_embedding
+#from TargetProtein import get_protein_embedding
 from model import xgboost_model, best_model
 import joblib
+import pickle
 
 #Initialize dataset
-datafile = pd.read_csv("train.csv",nrows=100)
+datafile = pd.read_csv("train.csv",nrows=20000)
 drug_structs=datafile["SMILES"].tolist()
 protein_structs=datafile["amino_acid_sequence"].tolist()
 y=datafile["Affinity"].values
@@ -19,9 +20,11 @@ y=datafile["Affinity"].values
 #call the encoders (morgan fp, protein)
 encoded_drug=Morgan_array(drug_structs) #this can be tuned according to the size of the dataset, for testing purposes we will use 100
 print("Drug encoding completed.")
-print("Starting protein encoding...")
-encoded_protein = np.array([get_protein_embedding(seq) for seq in protein_structs]) 
-print("Starting protein encoding...")
+
+with open('protein_embeddings.pkl', 'rb') as f:
+        protein_lookup = pickle.load(f)         # Match Protein Embeddings to rows in the csv (protein_embeddings)
+print("Mapping protein embeddings...")
+encoded_protein = np.stack(datafile['amino_acid_sequence'].map(protein_lookup).values)
 
 #dimentionality reduction by PCA
 print("Starting PCA dimensionality reduction...")
