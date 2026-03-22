@@ -1,6 +1,7 @@
 #the model will be trained on X = [Morgan_fp + Prot_embedding] y = pIC50
 import pandas as pd
 import numpy as np
+from xgboost import XGBRegressor
 from sklearn.decomposition import PCA
 
 from RDKit_Morgan_String import Morgan_array
