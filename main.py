@@ -12,7 +12,7 @@ import joblib
 import pickle
 
 #Initialize dataset
-datafile = pd.read_csv("train.csv",nrows=20000)
+datafile = pd.read_csv("train.csv")
 drug_structs=datafile["SMILES"].tolist()
 protein_structs=datafile["amino_acid_sequence"].tolist()
 y=datafile["Affinity"].values
