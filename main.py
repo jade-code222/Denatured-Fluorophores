@@ -14,9 +14,19 @@ protein_structs=datafile["amino acid sequence"].tolist()
 y=datafile["pIC50"].values
 
 #call the encoders (morgan fp, protein)
-encoded_drug=Morgan_array(datafile)
-encoded_features=get_protein_embedding(protein_structs)
-#call interaction builder
+encoded_drug=Morgan_array(drug_structs)
+encoded_protein = np.array([get_protein_embedding(seq) for seq in protein_structs]) 
+
+#dimentionality reduction by PCA
+drug_PCA=PCA(0.95)#this can be tuned
+drug_reduced = drug_PCA.fit_transform(encoded_drug)
+
+pca_protein = PCA(0.95)#this can be tuned
+protein_reduced = pca_protein.fit_transform(encoded_protein)
+
+
+#concatenate and add the element cross product to provide prossiblity of interation
+X= np.concatenate([drug_reduced, protein_reduced, encoded_drug*encoded_protein])
 
 #train model
 R2,MSE,MAE=xgboost_model(X,y)
