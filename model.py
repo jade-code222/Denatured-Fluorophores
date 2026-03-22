@@ -12,7 +12,7 @@ def xgboost_model(X,y,depth=6)->tuple:
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2, train_size=0.8, random_state=1, shuffle=True)
 
     #xg boost tree generation, 
-    tree_model = XGBRegressor(n_estimators=300,max_depth=depth,learning_rate=0.1,random_state=1)
+    tree_model = XGBRegressor(n_estimators=300,max_depth=depth,learning_rate=0.1,random_state=1,n_jobs=-1)
     #training on the train data
     tree_model.fit(X_train, y_train)
 

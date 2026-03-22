@@ -9,7 +9,7 @@ from rdkit.Chem import AllChem
 
 def Morgan_array():
     
-    # Read a CSV file
+    # Read a CSV file-->will do in main
 
     df = pd.read_csv("train.csv")
 
@@ -33,17 +33,18 @@ def Morgan_array():
 
     print (bitstring_Array)  # prints the "SMILES" column of the bitstring array
 
-    return bitstring_Array  
+    return bitstring_Array  #fix according to the fact that isnt string
 
-
+#this should be first?
 def Morgan_Bitstring (SMILE_STRING: str):       # temps function to get the bitstrings from the SMILE code
 # Create a bitstring from a SMILES string
 
     mol = Chem.MolFromSmiles(SMILE_STRING)
-
+    #maybe handle error (if its invalid for example)
     #Generate Morgan fingerprint (ECFP-like)
     fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=2048)
 
+    #here int array [0,1] not string
     fp_bitstring = fp.ToBitString()                 # converts the fingerprint to a bit string representation
 
     return fp_bitstring
