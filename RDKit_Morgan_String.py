@@ -3,14 +3,6 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit import DataStructs
 import numpy as np
-#add numpy
-
-# Read a CSV file
-
-
-#def Morgan_array():
-
-
 
 def Morgan_array(smiles_list: list):
 
@@ -30,8 +22,7 @@ def Morgan_Bitstring (SMILE_STRING: str):       # temps function to get the bits
     arr = np.zeros((2048,), dtype=int)
 
     mol = Chem.MolFromSmiles(SMILE_STRING)
-    #maybe handle error (if its invalid for example)
-    #Generate Morgan fingerprint (ECFP-like)
+    #Generate Morgan fingerprint 
     fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=2048)
 
     DataStructs.ConvertToNumpyArray(fp, arr)             #convert bitstring into numerical array
