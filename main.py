@@ -17,11 +17,16 @@ y=datafile["Affinity"].values
 
 #call the encoders (morgan fp, protein)
 encoded_drug=Morgan_array(drug_structs) #this can be tuned according to the size of the dataset, for testing purposes we will use 100
+print("Drug encoding completed.")
+print("Starting protein encoding...")
 encoded_protein = np.array([get_protein_embedding(seq) for seq in protein_structs]) 
+print("Starting protein encoding...")
 
 #dimentionality reduction by PCA
+print("Starting PCA dimensionality reduction...")
 drug_PCA=PCA(n_components=10)#this can be tuned
 drug_reduced = drug_PCA.fit_transform(encoded_drug)
+print("Drug PCA completed.")
 
 pca_protein = PCA(n_components=10)#this can be tuned
 protein_reduced = pca_protein.fit_transform(encoded_protein)
