@@ -1,1 +1,3 @@
 train.csv
+test_full_cold.csv
+*.csv
