@@ -10,7 +10,7 @@ from model import xgboost_model, best_model
 import joblib
 
 #Initialize dataset
-datafile = pd.read_csv("train.csv",nrows=20)
+datafile = pd.read_csv("train.csv",nrows=100)
 drug_structs=datafile["SMILES"].tolist()
 protein_structs=datafile["amino_acid_sequence"].tolist()
 y=datafile["Affinity"].values
