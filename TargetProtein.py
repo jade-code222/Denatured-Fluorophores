@@ -56,6 +56,7 @@ df = pd.read_csv('train.csv')
 unique_seqs = df['amino_acid_sequence'].unique() 
 print(f"Found {len(unique_seqs)} unique protein sequences.")
 
+#creates a key-value pair (dictionnary)
 protein_lookup = {}
 
 for i, seq in enumerate(unique_seqs):
