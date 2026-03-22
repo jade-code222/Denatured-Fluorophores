@@ -1,37 +1,79 @@
-from transformers import T5Tokenizer, T5EncoderModel
+import pandas as pd
 import torch
+from transformers import T5Tokenizer, T5EncoderModel
 import numpy as np
+import pickle
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-# Load the tokenizer
+# 1. Setup (The part you already have)
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 tokenizer = T5Tokenizer.from_pretrained('Rostlab/prot_t5_xl_half_uniref50-enc', do_lower_case=False)
-# Load the model
 model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc").to(device)
-
-#puts the model into evaluation mode
 model.eval()
-print('allo ')
+
 def get_protein_embedding(sequence):
-    # ProtTrans requires spaces between amino acids
     sequence_spaced = " ".join(list(sequence))
-    
-    # Tokenize and move to GPU/CPU
     ids = tokenizer.batch_encode_plus([sequence_spaced], add_special_tokens=True, padding=True)
     input_ids = torch.tensor(ids['input_ids']).to(device)
     attention_mask = torch.tensor(ids['attention_mask']).to(device)
-
-    # Generate hidden states without calculating gradients (faster)
     with torch.no_grad():
         embedding = model(input_ids=input_ids, attention_mask=attention_mask)
-    
-    # Use the 'last_hidden_state' 
-    # We take the mean across the sequence length (dim=1) to get a single vector per protein
     features = embedding.last_hidden_state.cpu().numpy()
-    protein_vector = np.mean(features, axis=1)
-    
-    return protein_vector.flatten()
+    return np.mean(features, axis=1).flatten()
 
-# Example: Sequence for a small peptide
-test_seq = "MSLGVASVSIR"
-embedding = get_protein_embedding(test_seq)
-print(f"Embedding shape: {embedding.shape}") # Typically 1024-dimensional
+
+#only first 10 rows read
+#read 10 lines
+print("Reading the first 10 rows of train.csv...")
+df = pd.read_csv('train.csv', nrows=10)
+
+# This will store our final embeddings
+protein_embeddings_list = []
+
+print("Starting target protein embedding generation...")
+for i, row in df.iterrows():
+    # Extract the amino acid sequence [cite: 49, 51]
+    sequence = row['amino_acid_sequence']
+    
+    # Generate the embedding
+    embedding = get_protein_embedding(sequence)
+    
+    protein_embeddings_list.append(embedding)
+    print(f"Processed protein {i+1}/10 | Vector Shape: {embedding.shape}")
+
+# Convert list to a final numpy matrix
+# This matrix can be used as the 'Target' input for your ML model
+protein_matrix = np.array(protein_embeddings_list)
+
+print("\n--- Summary ---")
+print(f"Final Protein Matrix Shape: {protein_matrix.shape}") 
+# Expected shape: (10, 1024)
+
+
+
+
+""""
+#only the unique ones, the whole file
+#read file
+print("Reading train.csv...")
+df = pd.read_csv('train.csv')
+
+# Optimization: Only embed each unique sequence ONCE [cite: 63]
+unique_seqs = df['amino_acid_sequence'].unique() 
+print(f"Found {len(unique_seqs)} unique protein sequences.")
+
+protein_lookup = {}
+
+for i, seq in enumerate(unique_seqs):
+    # This is where the actual 'reading' and 'calculating' happens
+    protein_lookup[seq] = get_protein_embedding(seq)
+    
+    if i % 10 == 0:
+        print(f"Processed {i}/{len(unique_seqs)} proteins...")
+
+# 3. Save it so you never have to do this again
+with open('protein_embeddings.pkl', 'wb') as f:
+    pickle.dump(protein_lookup, f)
+
+print("Finished! Your protein data is now saved in protein_embeddings.pkl")
+
+"""
