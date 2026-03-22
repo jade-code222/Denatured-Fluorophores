@@ -29,11 +29,11 @@ encoded_protein = np.stack(datafile['amino_acid_sequence'].map(protein_lookup).v
 #dimentionality reduction by PCA
 print("Starting PCA dimensionality reduction...")
 scaled_drug = StandardScaler().fit_transform(encoded_drug)
-drug_PCA=PCA(n_components=10)#this can be tuned
+drug_PCA=PCA(n_components=500)#this can be tuned
 drug_reduced = drug_PCA.fit_transform(scaled_drug)
 print("Drug PCA completed.")
 scaled_protein = StandardScaler().fit_transform(encoded_protein)
-protein_PCA = PCA(n_components=10)#this can be tuned
+protein_PCA = PCA(n_components=500)#this can be tuned
 protein_reduced = protein_PCA.fit_transform(scaled_protein)
 
 

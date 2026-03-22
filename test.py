@@ -13,7 +13,7 @@ prot_pca = joblib.load('protein_pca.pkl')
 #prot_scaler = joblib.load('protein_scaler.pkl')
 
 #
-test_data = pd.read_csv("test.csv")#temp idk what this is
+test_data = pd.read_csv("test_full_cold.csv")#temp idk what this is
 drug_structs = test_data["SMILES"].tolist()
 prot_seqs = test_data["amino_acid_sequence"].tolist()
 
