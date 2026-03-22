@@ -28,7 +28,11 @@ drug_PCA=PCA(n_components=10)#this can be tuned
 drug_reduced = drug_PCA.fit_transform(encoded_drug)
 print("Drug PCA completed.")
 
+<<<<<<< Updated upstream
 pca_protein = PCA(n_components=10)#this can be tuned
+=======
+protein_PCA = PCA(n_components=200)#this can be tuned
+>>>>>>> Stashed changes
 protein_reduced = pca_protein.fit_transform(encoded_protein)
 
 
@@ -51,4 +55,4 @@ final_model.fit(X, y)
 # Save everything
 joblib.dump(final_model, 'xgboost_pIC50.pkl')
 joblib.dump(drug_PCA, 'drug_pca.pkl')
-joblib.dump(pca_protein, 'protein_pca.pkl')
+joblib.dump(protein_PCA, 'protein_pca.pkl')

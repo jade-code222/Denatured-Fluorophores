@@ -10,7 +10,7 @@ drug_pca = joblib.load('drug_pca.pkl')
 prot_pca = joblib.load('protein_pca.pkl')
 
 #
-test_data = pd.read_csv("test.csv")
+test_data = pd.read_csv("test.csv")#temp idk what this is
 drug_structs = test_data["SMILES"].tolist()
 prot_seqs = test_data["amino acid sequence"].tolist()
 
@@ -18,7 +18,7 @@ prot_seqs = test_data["amino acid sequence"].tolist()
 encoded_drug = Morgan_array(drug_structs)
 encoded_prot = np.array([get_protein_embedding(s) for s in prot_seqs])
 
-# USE TRANSFORM ONLY (Don't re-fit the PCA)
+#Transform
 drug_red = drug_pca.transform(encoded_drug)
 prot_red = prot_pca.transform(encoded_prot)
 
