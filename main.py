@@ -12,7 +12,7 @@ import joblib
 #Initialize dataset
 datafile = pd.read_csv("train.csv",nrows=20)
 drug_structs=datafile["SMILES"].tolist()
-protein_structs=datafile['amino_acid_sequence'].tolist()
+protein_structs=datafile["amino acid sequence"].tolist()
 y=datafile["pIC50"].values
 
 #call the encoders (morgan fp, protein)

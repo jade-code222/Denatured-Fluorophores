@@ -12,11 +12,16 @@ import numpy as np
 
 
 
-def Morgan_array(df: pd.DataFrame):
+def Morgan_array(smiles_list: list):
 
-    df["SMILES_fp"] = df["SMILES"].apply(Morgan_Bitstring)
+    fingerprints = []
 
-    return df
+    for smile in smiles_list:
+        fp = Morgan_Bitstring(smile)
+        print (smile)
+        fingerprints.append(fp)
+
+    return fingerprints
 
     """
     # Read a CSV file-->will do in main
