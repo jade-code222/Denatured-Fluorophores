@@ -12,18 +12,18 @@ import joblib
 #Initialize dataset
 datafile = pd.read_csv("train.csv",nrows=20)
 drug_structs=datafile["SMILES"].tolist()
-protein_structs=datafile["amino acid sequence"].tolist()
-y=datafile["pIC50"].values
+protein_structs=datafile["amino_acid_sequence"].tolist()
+y=datafile["Affinity"].values
 
 #call the encoders (morgan fp, protein)
 encoded_drug=Morgan_array(drug_structs) #this can be tuned according to the size of the dataset, for testing purposes we will use 100
 encoded_protein = np.array([get_protein_embedding(seq) for seq in protein_structs]) 
 
 #dimentionality reduction by PCA
-drug_PCA=PCA(n_components=200)#this can be tuned
+drug_PCA=PCA(n_components=10)#this can be tuned
 drug_reduced = drug_PCA.fit_transform(encoded_drug)
 
-pca_protein = PCA(n_components=200)#this can be tuned
+pca_protein = PCA(n_components=10)#this can be tuned
 protein_reduced = pca_protein.fit_transform(encoded_protein)
 
 

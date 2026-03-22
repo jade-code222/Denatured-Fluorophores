@@ -21,6 +21,7 @@ def get_protein_embedding(sequence):
     return np.mean(features, axis=1).flatten()
 
 
+"""
 #only first 10 rows read
 #read 10 lines
 print("Reading the first 10 rows of train.csv...")
@@ -42,7 +43,7 @@ print("\n--- Summary ---")
 print(f"Final Protein Matrix Shape: {protein_matrix.shape}") 
 #expected -> (10, 1024)
 
-
+"""
 
 
 """"
