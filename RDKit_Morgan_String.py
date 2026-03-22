@@ -12,11 +12,16 @@ import numpy as np
 
 
 
-def Morgan_array(df: pd.DataFrame):
+def Morgan_array(smiles_list: list):
 
-    df["SMILES_fp"] = df["SMILES"].apply(Morgan_Bitstring)
+    fingerprints = []
 
-    return df
+    for smile in smiles_list:
+        fp = Morgan_Bitstring(smile)
+        print (smile)
+        fingerprints.append(fp)
+
+    return fingerprints
 
     """
     # Read a CSV file-->will do in main
@@ -62,7 +67,8 @@ def Morgan_Bitstring (SMILE_STRING: str):       # temps function to get the bits
 
     return arr  
 
-
-Morgan_array()
+datafile = pd.read_csv("train.csv")
+drug_structs=datafile["SMILES"].tolist()
+Morgan_array(drug_structs.head(10))
 #must be an array of numbers [1,0,1,1,0,...,1]
 
