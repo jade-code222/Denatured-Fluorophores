@@ -63,6 +63,6 @@ def Morgan_Bitstring (SMILE_STRING: str):       # temps function to get the bits
     return arr  
 
 
-Morgan_array()
+#Morgan_array()
 #must be an array of numbers [1,0,1,1,0,...,1]
 
