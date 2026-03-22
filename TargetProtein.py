@@ -10,7 +10,7 @@ model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc").t
 
 #puts the model into evaluation mode
 model.eval()
-
+print('allo ')
 def get_protein_embedding(sequence):
     # ProtTrans requires spaces between amino acids
     sequence_spaced = " ".join(list(sequence))
